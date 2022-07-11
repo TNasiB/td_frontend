@@ -8,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^0.27.2",
+    "dotenv": "^16.0.1",
     "element-plus": "^2.2.9",
     "pinia": "^2.0.14",
     "sanitize.css": "^13.0.0",

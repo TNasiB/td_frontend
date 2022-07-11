@@ -1,12 +1,16 @@
 <template>
   <div class="tasks-group">
-    <el-scrollbar>
-      <div class="wrapper">
-        <el-card v-for="o in 10" :key="o" class="box-card">
+    <el-scrollbar class="tasks-group__scrollbox">
+      <div class="tasks-group__scrollbox-inner">
+        <el-card
+          v-for="group in groupsStore.groups"
+          :key="group.id"
+          class="box-card"
+        >
           <template #header>
             <div class="card-header">
-              <span>Card name</span>
-              <el-button class="button" text>!!!!</el-button>
+              <span class="card-header__title">{{ group.title }}</span>
+              <el-button type="danger" :icon="Delete" circle />
             </div>
           </template>
           <div v-for="o in 10" :key="o" class="text item">
@@ -19,9 +23,11 @@
 </template>
 
 <script setup>
-import { useTasksStore } from "../stores/tasks";
-const tasksStore = useTasksStore();
-const tasks = tasksStore.tasks;
+import { useGroupStore } from "../stores/groups";
+import { Delete } from "@element-plus/icons-vue";
+import { func } from "../service/index";
+const groupsStore = useGroupStore();
+func();
 </script>
 
 <style lang="scss" scoped>
@@ -32,15 +38,15 @@ const tasks = tasksStore.tasks;
     min-width: 320px;
   }
 
-  .card-header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .wrapper {
+  &__scrollbox-inner {
     display: flex;
     gap: 10px;
     padding-bottom: 20px;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
   }
 }
 </style>
