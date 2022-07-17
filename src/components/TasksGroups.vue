@@ -1,42 +1,49 @@
 <template>
   <div class="tasks-group">
     <el-scrollbar class="tasks-group__scrollbox">
-      <div class="tasks-group__scrollbox-inner">
-        <el-card
-          v-for="group in groupsStore.groups"
-          :key="group.id"
-          class="box-card"
+      <div
+        class="tasks-group__scrollbox-inner"
+        v-if="groupStore.groups.length > 0"
+      >
+        <div
+          class="tasks-group__card-wrapper"
+          v-for="group in groupStore.groups"
+          :key="group._id"
         >
-          <template #header>
-            <div class="card-header">
-              <span class="card-header__title">{{ group.title }}</span>
-              <el-button type="danger" :icon="Delete" circle />
-            </div>
-          </template>
-          <div v-for="o in 10" :key="o" class="text item">
-            {{ "List item " + o }}
-          </div>
-        </el-card>
+          <TasksGroupsCard
+            v-bind="group"
+            @delete-group="deleteGroup"
+            @update-group="updateGroup"
+          />
+        </div>
       </div>
+      <el-empty v-else
+        ><template #description>
+          <p class="tasks-group__emty-desc">No active groups</p>
+        </template></el-empty
+      >
     </el-scrollbar>
   </div>
 </template>
 
 <script setup>
 import { useGroupStore } from "../stores/groups";
-import { Delete } from "@element-plus/icons-vue";
-import { func } from "../service/index";
-const groupsStore = useGroupStore();
-func();
+import TasksGroupsCard from "./TasksGroupsCard.vue";
+
+const groupStore = useGroupStore();
+
+function deleteGroup(id) {
+  groupStore.deleteGroup(id);
+}
+
+function updateGroup(newGroup) {
+  groupStore.updateGroup(newGroup);
+}
 </script>
 
 <style lang="scss" scoped>
 .tasks-group {
   flex-grow: 1;
-  .box-card {
-    width: 320px;
-    min-width: 320px;
-  }
 
   &__scrollbox-inner {
     display: flex;
@@ -44,9 +51,8 @@ func();
     padding-bottom: 20px;
   }
 
-  .card-header {
-    display: flex;
-    justify-content: space-between;
+  &__emty-desc {
+    color: #fff;
   }
 }
 </style>

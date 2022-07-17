@@ -17,6 +17,8 @@ import AppWorkplace from "./components/AppWorkplace.vue";
 * {
   font-size: 16px;
   font-weight: 400;
+  margin: 0;
+  padding: 0;
 }
 #app {
   width: 100vw;

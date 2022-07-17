@@ -1,30 +1,35 @@
 import { defineStore } from "pinia";
+import {
+  fetchGroups,
+  addGroup,
+  deleteGroup,
+  updateGroup,
+} from "../service/rest/group";
 
 export const useGroupStore = defineStore("group", {
   state: () => {
     return {
-      groups: [
-        {
-          title: "Todos",
-        },
-        {
-          title: "Todos2",
-        },
-        {
-          title: "Todos02",
-        },
-        {
-          title: "Todos3",
-        },
-        {
-          title: "Todos4",
-        },
-      ],
+      groups: [],
     };
   },
   actions: {
     addGroup(group) {
-      this.groups.unshift(group);
+      return addGroup(group).then(({ data }) => this.groups.unshift(data));
+    },
+    fetchGroups() {
+      fetchGroups().then(({ data }) => (this.groups = data));
+    },
+    deleteGroup(id) {
+      this.groups = this.groups.filter((group) => group._id !== id);
+      deleteGroup(id);
+    },
+    updateGroup(newGroup) {
+      updateGroup(newGroup).then(() => {
+        Object.assign(
+          this.groups.find((group) => group._id === newGroup._id),
+          newGroup
+        );
+      });
     },
   },
 });

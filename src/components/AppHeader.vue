@@ -30,7 +30,7 @@
 </template>
 
 <script setup>
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { Edit } from "@element-plus/icons-vue";
 import CreateModal from "./CreateModal.vue";
 
@@ -42,11 +42,9 @@ function showCreateModal(type) {
   isModalOpen.value = true;
 }
 function closeModal() {
-  console.log("before-close");
   isModalOpen.value = false;
 }
 function closeModal1() {
-  console.log("сработало ебать");
   isModalOpen.value = false;
 }
 </script>
@@ -61,6 +59,8 @@ function closeModal1() {
     font-size: 32px;
     margin: 0;
     color: #fff;
+    font-weight: 700;
+    padding-left: 10px;
   }
 
   &__main {

@@ -6,7 +6,7 @@
       width="30%"
       :before-close="closeModal"
     >
-      <div class="create-modal__main">
+      <form class="create-modal__main">
         <el-input
           v-model="form.title"
           type="input"
@@ -19,10 +19,10 @@
           type="textarea"
           placeholder="Please input description"
         />
-      </div>
+      </form>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="$emit('close-modal')">Cancel</el-button>
+          <el-button @click="closeModal">Cancel</el-button>
           <el-button type="primary" @click="createItem">Confirm</el-button>
         </span>
       </template>
@@ -32,7 +32,7 @@
 
 <script setup>
 import { reactive } from "vue";
-import { useTasksStore } from "../stores/tasks";
+import { useGroupStore } from "../stores/groups";
 
 defineProps({
   isModalOpen: {
@@ -47,20 +47,25 @@ defineProps({
     },
   },
 });
-
-const form = reactive({
+const initForm = {
   title: "",
   desc: "",
-});
+};
+let form = reactive({ ...initForm });
 
 const emit = defineEmits(["close-modal1"]);
 
 function closeModal() {
-  console.log("in modal comp beforeclose");
+  Object.assign(form, initForm);
   emit("close-modal1");
 }
 
-function createItem() {}
+function createItem() {
+  const { title, desc } = form;
+  useGroupStore()
+    .addGroup({ title, desc })
+    .then(() => closeModal());
+}
 </script>
 
 <style lang="scss" scoped>

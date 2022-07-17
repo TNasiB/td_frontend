@@ -6,7 +6,11 @@
 
 <script setup>
 import TasksGroups from "./TasksGroups.vue";
+import { useGroupStore } from "../stores/groups";
+
+useGroupStore().fetchGroups();
 </script>
+
 <style lang="scss" scoped>
 .app-workplace {
   padding: 10px;
