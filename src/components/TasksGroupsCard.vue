@@ -1,6 +1,8 @@
 <script setup>
 import { Delete } from "@element-plus/icons-vue";
 import TaskCard from "./TaskCard.vue";
+import { useTasksStore } from "../stores/tasks";
+import { computed } from "vue";
 
 const props = defineProps({
   title: { type: String, required: true },
@@ -13,20 +15,10 @@ function updateGroup() {
   emit("update-group", { title, _id });
 }
 
-const tasks = [
-  {
-    title: "Тестовая задача1",
-    isCompleted: false,
-  },
-  {
-    title: "Тестовая задача2",
-    isCompleted: false,
-  },
-  {
-    title: "Тестовая задача3",
-    isCompleted: true,
-  },
-];
+const taskStore = useTasksStore();
+const filteredTasks = computed(() =>
+  taskStore.tasks.filter((task) => task.groupId === props._id)
+);
 </script>
 
 <template>
@@ -48,14 +40,8 @@ const tasks = [
           />
         </div>
       </template>
-      <p class="task-wrapper__title-type">Uncompleted</p>
       <div class="task-wrapper uncompleted">
-        <TaskCard v-for="task in tasks" :key="task.id" v-bind="task" />
-      </div>
-      <hr />
-      <p class="task-wrapper__title-type">Completed</p>
-      <div class="task-wrapper completed">
-        <TaskCard v-for="task in tasks" :key="task.id" v-bind="task" />
+        <TaskCard v-for="task in filteredTasks" :key="task.id" v-bind="task" />
       </div>
     </el-card>
   </div>

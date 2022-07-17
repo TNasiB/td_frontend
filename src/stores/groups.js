@@ -17,7 +17,7 @@ export const useGroupStore = defineStore("group", {
       return addGroup(group).then(({ data }) => this.groups.unshift(data));
     },
     fetchGroups() {
-      fetchGroups().then(({ data }) => (this.groups = data));
+      return fetchGroups().then(({ data }) => (this.groups = data));
     },
     deleteGroup(id) {
       this.groups = this.groups.filter((group) => group._id !== id);

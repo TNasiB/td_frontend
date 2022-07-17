@@ -1,7 +1,7 @@
 <template>
   <el-row class="app-header">
     <el-col :span="12" class="app-header__main"
-      ><h1 class="app-header__title">todolist</h1></el-col
+      ><h1 class="app-header__title">TODO Dashboard</h1></el-col
     >
     <el-col :span="12" class="app-header__main app-header__add-task">
       <el-dropdown>
