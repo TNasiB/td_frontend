@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { addTask, fetchTasks } from "../service/rest/task";
+import { useGroupStore } from "./groups.js";
+
 export const useTasksStore = defineStore("tasks", {
   state: () => {
     return {
@@ -12,7 +14,12 @@ export const useTasksStore = defineStore("tasks", {
       fetchTasks().then(({ data }) => (this.tasks = [...data]));
     },
     addTask(task) {
-      return addTask(task).then(({ data }) => this.tasks.push(data));
+      return addTask(task).then(({ data }) => {
+        useGroupStore()
+          .groups.find((group) => data.groupId === group._id)
+          .tasks.push(data);
+        this.tasks.push(data);
+      });
     },
   },
 });

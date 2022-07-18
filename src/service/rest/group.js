@@ -25,3 +25,10 @@ export const updateGroup = (data) =>
     url: "http://localhost:4000/api/group",
     data,
   });
+
+export const updateGroupsOrder = (data) =>
+  makeRequest({
+    method: "PUT",
+    url: "http://localhost:4000/api/groups",
+    data,
+  });

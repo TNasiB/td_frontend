@@ -34,7 +34,7 @@ function createItem() {
   if (props.type === "group") {
     const { title } = form;
     useGroupStore()
-      .addGroup({ title, desc })
+      .addGroup({ title })
       .then(() => closeModal());
   } else if (props.type === "task") {
     const { title, desc, groupId } = form;

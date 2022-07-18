@@ -1,12 +1,14 @@
 <script setup>
 import { Delete } from "@element-plus/icons-vue";
 import TaskCard from "./TaskCard.vue";
-import { useTasksStore } from "../stores/tasks";
+import { useGroupStore } from "../stores/groups.js";
 import { computed } from "vue";
+import { VueDraggableNext } from "vue-draggable-next";
 
 const props = defineProps({
   title: { type: String, required: true },
   _id: { type: String, required: true },
+  tasks: { type: Array, required: true },
 });
 const emit = defineEmits(["close-modal1", "update-group"]);
 
@@ -14,11 +16,16 @@ function updateGroup() {
   const { title, _id } = props;
   emit("update-group", { title, _id });
 }
+const storeGroup = useGroupStore();
 
-const taskStore = useTasksStore();
-const filteredTasks = computed(() =>
-  taskStore.tasks.filter((task) => task.groupId === props._id)
-);
+const TaskGroup = computed({
+  get() {
+    return props.tasks;
+  },
+  set(newValue) {
+    storeGroup.setNewTaskOrder(newValue, props._id);
+  },
+});
 </script>
 
 <template>
@@ -40,9 +47,9 @@ const filteredTasks = computed(() =>
           />
         </div>
       </template>
-      <div class="task-wrapper uncompleted">
-        <TaskCard v-for="task in filteredTasks" :key="task.id" v-bind="task" />
-      </div>
+      <VueDraggableNext v-model="TaskGroup" class="task-wrapper">
+        <TaskCard v-for="task in TaskGroup" :key="task.id" v-bind="task" />
+      </VueDraggableNext>
     </el-card>
   </div>
 </template>
