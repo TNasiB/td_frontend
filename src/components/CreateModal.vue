@@ -32,9 +32,10 @@ function closeModal() {
 
 function createItem() {
   if (props.type === "group") {
+    const order = useGroupStore().groups.length;
     const { title } = form;
     useGroupStore()
-      .addGroup({ title })
+      .addGroup({ title, order })
       .then(() => closeModal());
   } else if (props.type === "task") {
     const { title, desc, groupId } = form;

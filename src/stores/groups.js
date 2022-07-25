@@ -4,7 +4,8 @@ import {
   addGroup,
   deleteGroup,
   updateGroup,
-  updateGroupsOrder,
+  updateGroupOrder,
+  updateTaskGroup,
 } from "../service/rest/group";
 
 export const useGroupStore = defineStore("group", {
@@ -15,7 +16,7 @@ export const useGroupStore = defineStore("group", {
   },
   actions: {
     addGroup(group) {
-      return addGroup(group).then(({ data }) => this.groups.unshift(data));
+      return addGroup(group).then(({ data }) => this.groups.push(data));
     },
     fetchGroups() {
       return fetchGroups().then(({ data }) => (this.groups = data));
@@ -32,14 +33,14 @@ export const useGroupStore = defineStore("group", {
         );
       });
     },
-    updateDragg(newGroupArray) {
-      updateGroupsOrder(newGroupArray);
+    updateGroupOrder() {
+      updateGroupOrder(this.groups).then((data) => console.log(data));
     },
-    setNewTaskOrder(taskArray, groupId) {
-      const remarkedGroup = this.groups.find((group) => group._id === groupId);
-      console.log(remarkedGroup);
-      remarkedGroup.tasks = [...taskArray];
-      this.updateGroup(remarkedGroup);
+    updateTaskOrder(event) {
+      this.groups.forEach((group) =>
+        group.tasks.forEach((task) => (task.groupId = group._id))
+      );
+      updateTaskGroup(event);
     },
   },
 });

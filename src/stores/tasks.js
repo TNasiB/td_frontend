@@ -14,6 +14,7 @@ export const useTasksStore = defineStore("tasks", {
       fetchTasks().then(({ data }) => (this.tasks = [...data]));
     },
     addTask(task) {
+      console.log(task);
       return addTask(task).then(({ data }) => {
         useGroupStore()
           .groups.find((group) => data.groupId === group._id)

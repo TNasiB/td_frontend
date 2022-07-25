@@ -1,5 +1,7 @@
 import makeRequest from "../makeRequest";
 
+const url = "http://localhost:4000/api/group";
+
 export const fetchGroups = () => {
   return makeRequest({
     url: "http://localhost:4000/api/group",
@@ -26,9 +28,17 @@ export const updateGroup = (data) =>
     data,
   });
 
-export const updateGroupsOrder = (data) =>
+export const updateGroupOrder = (data) =>
   makeRequest({
     method: "PUT",
-    url: "http://localhost:4000/api/groups",
+    url: url + "/order",
     data,
   });
+
+export const updateTaskGroup = ({ element }) => {
+  return makeRequest({
+    method: "PUT",
+    url: url + "/torder",
+    data: element,
+  });
+};

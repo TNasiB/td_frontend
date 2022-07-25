@@ -1,26 +1,12 @@
 <script setup>
 import { useGroupStore } from "../stores/groups";
-import { VueDraggableNext } from "vue-draggable-next";
-import { computed } from "vue";
 import TasksGroupsCard from "./TasksGroupsCard.vue";
+import draggable from "vuedraggable";
 const groupStore = useGroupStore();
 
-function deleteGroup(id) {
-  groupStore.deleteGroup(id);
+function updateGroupOrder() {
+  groupStore.updateGroupOrder();
 }
-
-function updateGroup(newGroup) {
-  groupStore.updateGroup(newGroup);
-}
-
-const draggableGroups = computed({
-  get() {
-    return groupStore.groups;
-  },
-  set(newValue) {
-    groupStore.updateDragg(newValue);
-  },
-});
 </script>
 
 <template>
@@ -30,18 +16,17 @@ const draggableGroups = computed({
         class="tasks-group__scrollbox-inner"
         v-if="groupStore.groups.length > 0"
       >
-        <VueDraggableNext
-          v-model="draggableGroups"
+        <draggable
+          :list="groupStore.groups"
+          itemKey="group"
+          group="group"
           class="tasks-group__card-wrapper"
+          @change="updateGroupOrder"
         >
-          <TasksGroupsCard
-            v-for="group in draggableGroups"
-            :key="group._id"
-            v-bind="group"
-            @delete-group="deleteGroup"
-            @update-group="updateGroup"
-          />
-        </VueDraggableNext>
+          <template #item="{ element }">
+            <TasksGroupsCard :key="element._id" v-bind="element" />
+          </template>
+        </draggable>
       </div>
       <el-empty v-else
         ><template #description>
